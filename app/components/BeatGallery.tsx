@@ -56,7 +56,7 @@ const BeatGallery = () => {
       genre: "Pop",
       duration: "3:33",
       price: 329,
-      imageUrl: "https://images.unsplash.com/photo-1493748711230-013657b1cd38?w=400&h=400&fit=crop"
+      imageUrl: "https://ix-marketing.imgix.net/focalpoint.png?auto=format,compress&w=1946"
     },
     {
       id: 6,
