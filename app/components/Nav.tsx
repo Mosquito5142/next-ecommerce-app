@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Music, Menu, X, ShoppingCart, User } from "lucide-react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,36 +22,36 @@ const Nav = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a
-              href="#"
+            <Link
+              href="/"
               className="text-white hover:text-neon-pink transition-colors duration-300"
             >
               หน้าแรก
-            </a>
-            <a
+            </Link>
+            <Link
               href="#beats"
               className="text-white hover:text-neon-cyan transition-colors duration-300"
             >
               บีทเพลง
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/products"
               className="text-white hover:text-neon-pink transition-colors duration-300"
             >
               หมวดหมู่
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/about"
               className="text-white hover:text-neon-cyan transition-colors duration-300"
             >
               เกี่ยวกับ
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/contact"
               className="text-white hover:text-neon-pink transition-colors duration-300"
             >
               ติดต่อ
-            </a>
+            </Link>
           </nav>
 
           {/* Desktop Actions */}
@@ -83,36 +84,36 @@ const Nav = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-white/10">
             <nav className="flex flex-col space-y-4 mt-4">
-              <a
-                href="#"
+              <Link
+                href="/"
                 className="text-white hover:text-neon-pink transition-colors"
               >
                 หน้าแรก
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#beats"
                 className="text-white hover:text-neon-cyan transition-colors"
               >
                 บีทเพลง
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/products"
                 className="text-white hover:text-neon-pink transition-colors"
               >
                 หมวดหมู่
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/about"
                 className="text-white hover:text-neon-cyan transition-colors"
               >
                 เกี่ยวกับ
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="/contact"
                 className="text-white hover:text-neon-pink transition-colors"
               >
                 ติดต่อ
-              </a>
+              </Link>
               <div className="flex space-x-4 pt-4">
                 <Button variant="ghost" size="sm" className="hover:bg-white/10">
                   <ShoppingCart className="w-4 h-4 mr-2" />

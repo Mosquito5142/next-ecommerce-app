@@ -1,102 +1,78 @@
 'use client'; 
-import { useState } from 'react';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, SlidersHorizontal, Edit, Plus } from 'lucide-react';
 import { Button } from "./ui/button";
 import { Input } from './ui/input';
 import BeatCard from './BeatCard';
+import Link from 'next/link';
+
+interface Product {
+  _id: string;
+  title: string;
+  artist: string;
+  genre: string;
+  duration: string;
+  price: number;
+  imageUrl: string;
+  beatUrl: string;
+  status: string;
+}
 
 const BeatGallery = () => {
   const [currentPlaying, setCurrentPlaying] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('ทั้งหมด');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const genres = ['ทั้งหมด', 'Hip Hop', 'R&B', 'Pop', 'Electronic', 'Rock', 'Jazz', 'Trap'];
 
-  const beats = [
-    {
-      id: 1,
-      title: "Midnight Vibes",
-      artist: "DJ ProSound",
-      genre: "Hip Hop",
-      duration: "3:24",
-      price: 299,
-      imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"
-    },
-    {
-      id: 2,
-      title: "Neon Dreams",
-      artist: "BeatMaker",
-      genre: "Electronic",
-      duration: "4:12",
-      price: 399,
-      imageUrl: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400&fit=crop"
-    },
-    {
-      id: 3,
-      title: "City Lights",
-      artist: "Urban Producer",
-      genre: "R&B",
-      duration: "3:45",
-      price: 349,
-      imageUrl: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop"
-    },
-    {
-      id: 4,
-      title: "Thunder Storm",
-      artist: "Storm Beats",
-      genre: "Trap",
-      duration: "2:58",
-      price: 279,
-      imageUrl: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=400&fit=crop"
-    },
-    {
-      id: 5,
-      title: "Summer Breeze",
-      artist: "Chill Producer",
-      genre: "Pop",
-      duration: "3:33",
-      price: 329,
-      imageUrl: "https://ix-marketing.imgix.net/focalpoint.png?auto=format,compress&w=1946"
-    },
-    {
-      id: 6,
-      title: "Deep Space",
-      artist: "Cosmic Beats",
-      genre: "Electronic",
-      duration: "4:27",
-      price: 449,
-      imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop"
-    },
-    {
-      id: 7,
-      title: "Golden Hour",
-      artist: "Sunset Studios",
-      genre: "Jazz",
-      duration: "5:15",
-      price: 389,
-      imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"
-    },
-    {
-      id: 8,
-      title: "Neon Pulse",
-      artist: "Electric Mind",
-      genre: "Electronic",
-      duration: "3:52",
-      price: 359,
-      imageUrl: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400&fit=crop"
+  // ดึงข้อมูลสินค้าจาก API
+  const fetchProducts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        limit: '12',
+        ...(searchTerm && { search: searchTerm }),
+        ...(selectedGenre !== 'ทั้งหมด' && { genre: selectedGenre })
+      });
+      
+      const response = await fetch(`/api/products?${queryParams}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data.products);
+        setTotalPages(data.pagination.pages);
+      } else {
+        console.error('Failed to fetch products');
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  }, [page, searchTerm, selectedGenre]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handlePlayToggle = (id: number) => {
     setCurrentPlaying(currentPlaying === id ? null : id);
   };
 
-  const filteredBeats = beats.filter(beat => {
-    const matchesSearch = beat.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         beat.artist.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = selectedGenre === 'ทั้งหมด' || beat.genre === selectedGenre;
-    return matchesSearch && matchesGenre;
-  });
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setPage(1);
+  };
+
+  const handleGenreChange = (genre: string) => {
+    setSelectedGenre(genre);
+    setPage(1);
+  };
 
   return (
     <section id="beats" className="py-20 relative">
@@ -109,9 +85,17 @@ const BeatGallery = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-6xl font-bold text-neon mb-4">
-            บีทเพลง
-          </h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-4xl md:text-6xl font-bold text-neon">
+              บีทเพลง
+            </h2>
+            <Link href="/addProduct">
+              <Button className="bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold hover-glow">
+                <Plus className="w-4 h-4 mr-2" />
+                เพิ่มสินค้าใหม่
+              </Button>
+            </Link>
+          </div>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             คอลเลกชั่นบีทเพลงคุณภาพสูงจากโปรดิวเซอร์ระดับโลก
           </p>
@@ -125,7 +109,7 @@ const BeatGallery = () => {
             <Input
               placeholder="ค้นหาบีทเพลง หรือศิลปิน..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
               className="pl-10 bg-black/20 border-white/20 text-white placeholder:text-gray-400 focus:border-neon-pink"
             />
           </div>
@@ -137,7 +121,7 @@ const BeatGallery = () => {
                 key={genre}
                 variant={selectedGenre === genre ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedGenre(genre)}
+                onClick={() => handleGenreChange(genre)}
                 className={selectedGenre === genre 
                   ? "bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold" 
                   : "border-white/20 text-white hover:bg-white/10"
@@ -158,28 +142,71 @@ const BeatGallery = () => {
         {/* Results Count */}
         <div className="mb-8">
           <p className="text-gray-400">
-            พบ <span className="text-neon-cyan font-semibold">{filteredBeats.length}</span> บีทเพลง
+            พบ <span className="text-neon-cyan font-semibold">{products.length}</span> บีทเพลง
+            {loading && " (กำลังโหลด...)"}
           </p>
         </div>
 
         {/* Beat Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredBeats.map((beat) => (
-            <BeatCard
-              key={beat.id}
-              {...beat}
-              isPlaying={currentPlaying === beat.id}
-              onPlayToggle={handlePlayToggle}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-white text-xl">กำลังโหลดข้อมูล...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product, index) => (
+              <div key={product._id} className="relative group">
+                <BeatCard
+                  id={index + 1}
+                  title={product.title}
+                  artist={product.artist}
+                  genre={product.genre}
+                  duration={product.duration}
+                  price={product.price}
+                  imageUrl={product.imageUrl}
+                  isPlaying={currentPlaying === index + 1}
+                  onPlayToggle={handlePlayToggle}
+                />
+                {/* Edit Button */}
+                <Link href={`/editProduct/${product._id}`}>
+                  <Button 
+                    size="sm"
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white hover:bg-black/90"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
 
-        {/* Load More */}
-        <div className="text-center mt-12">
-          <Button size="lg" className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold hover-glow">
-            โหลดเพิ่มเติม
-          </Button>
-        </div>
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-12 gap-2">
+            <Button 
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+              variant="outline" 
+              className="border-white/20 text-white hover:bg-white/10"
+            >
+              ก่อนหน้า
+            </Button>
+            
+            <span className="flex items-center px-4 text-white">
+              หน้า {page} จาก {totalPages}
+            </span>
+            
+            <Button 
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+              variant="outline" 
+              className="border-white/20 text-white hover:bg-white/10"
+            >
+              ถัดไป
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
