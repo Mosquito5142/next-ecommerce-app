@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 export default function AddProductPage() {
   // typescript
@@ -15,19 +14,19 @@ export default function AddProductPage() {
     status: string; // เช่น 'available', 'unavailable', 'draft'
   };
 
-  const [title, setTitle] = useState<string>("");
-  const [artist, setArtist] = useState<string>("");
-  const [genre, setGenre] = useState<string>("");
-  const [duration, setDuration] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [beatUrl, setBeatUrl] = useState<string>("");
-  const [status, setStatus] = useState<string>("available");
+  const [title, setTitle] = useState<Product["title"]>("");
+  const [artist, setArtist] = useState<Product["artist"]>("");
+  const [genre, setGenre] = useState<Product["genre"]>("");
+  const [duration, setDuration] = useState<Product["duration"]>("");
+  const [price, setPrice] = useState<Product["price"]>(0);
+  const [imageUrl, setImageUrl] = useState<Product["imageUrl"]>("");
+  const [beatUrl, setBeatUrl] = useState<Product["beatUrl"]>("");
+  const [status, setStatus] = useState<Product["status"]>("available");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const productData = {
         title,
@@ -37,38 +36,38 @@ export default function AddProductPage() {
         price,
         imageUrl,
         beatUrl,
-        status
+        status,
       };
-      
-      const response = await fetch('/api/products', {
-        method: 'POST',
+
+      const response = await fetch("/api/products", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(productData),
       });
-      
+
       if (response.ok) {
-        alert('เพิ่มสินค้าสำเร็จ!');
+        alert("เพิ่มสินค้าสำเร็จ!");
         // รีเซ็ตฟอร์ม
-        setTitle('');
-        setArtist('');
-        setGenre('');
-        setDuration('');
+        setTitle("");
+        setArtist("");
+        setGenre("");
+        setDuration("");
         setPrice(0);
-        setImageUrl('');
-        setBeatUrl('');
-        setStatus('available');
-        
+        setImageUrl("");
+        setBeatUrl("");
+        setStatus("available");
+
         // นำทางไปหน้าสินค้า
-        router.push('/products');
+        router.push("/products");
       } else {
         const errorData = await response.json();
         alert(`เกิดข้อผิดพลาด: ${errorData.error}`);
       }
     } catch (error) {
-      console.error('Error adding product:', error);
-      alert('เกิดข้อผิดพลาดในการเพิ่มสินค้า');
+      console.error("Error adding product:", error);
+      alert("เกิดข้อผิดพลาดในการเพิ่มสินค้า");
     }
   };
 
@@ -206,7 +205,6 @@ export default function AddProductPage() {
             <option value="unavailable">ไม่พร้อมจำหน่าย</option>
           </select>
         </div>
-
 
         <button
           type="submit"

@@ -1,5 +1,7 @@
+import BeatGallery from "../components/BeatGallery";
+
 export default function page() {
   return (
-    <div className="">aedgsahb</div>
+      <BeatGallery />
   );
 }

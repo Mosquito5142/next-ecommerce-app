@@ -1,10 +1,10 @@
-'use client'; 
-import { useState, useEffect, useCallback } from 'react';
-import { Search, SlidersHorizontal, Edit, Plus } from 'lucide-react';
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import { Search, SlidersHorizontal, Edit, Plus } from "lucide-react";
 import { Button } from "./ui/button";
-import { Input } from './ui/input';
-import BeatCard from './BeatCard';
-import Link from 'next/link';
+import { Input } from "./ui/input";
+import BeatCard from "./BeatCard";
+import Link from "next/link";
 
 interface Product {
   _id: string;
@@ -20,14 +20,23 @@ interface Product {
 
 const BeatGallery = () => {
   const [currentPlaying, setCurrentPlaying] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('ทั้งหมด');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("ทั้งหมด");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const genres = ['ทั้งหมด', 'Hip Hop', 'R&B', 'Pop', 'Electronic', 'Rock', 'Jazz', 'Trap'];
+  const genres = [
+    "ทั้งหมด",
+    "Hip Hop",
+    "R&B",
+    "Pop",
+    "Electronic",
+    "Rock",
+    "Jazz",
+    "Trap",
+  ];
 
   // ดึงข้อมูลสินค้าจาก API
   const fetchProducts = useCallback(async () => {
@@ -35,22 +44,22 @@ const BeatGallery = () => {
       setLoading(true);
       const queryParams = new URLSearchParams({
         page: page.toString(),
-        limit: '12',
+        limit: "12",
         ...(searchTerm && { search: searchTerm }),
-        ...(selectedGenre !== 'ทั้งหมด' && { genre: selectedGenre })
+        ...(selectedGenre !== "ทั้งหมด" && { genre: selectedGenre }),
       });
-      
+
       const response = await fetch(`/api/products?${queryParams}`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setProducts(data.products);
         setTotalPages(data.pagination.pages);
       } else {
-        console.error('Failed to fetch products');
+        console.error("Failed to fetch products");
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
@@ -122,9 +131,10 @@ const BeatGallery = () => {
                 variant={selectedGenre === genre ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleGenreChange(genre)}
-                className={selectedGenre === genre 
-                  ? "bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold" 
-                  : "border-white/20 text-white hover:bg-white/10"
+                className={
+                  selectedGenre === genre
+                    ? "neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold"
+                    : "border-white/20 text-white hover:bg-white/10"
                 }
               >
                 {genre}
@@ -133,7 +143,10 @@ const BeatGallery = () => {
           </div>
 
           {/* Advanced Filter Button */}
-          <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+          <Button
+            variant="outline"
+            className="border-white/20 text-white hover:bg-white/10"
+          >
             <SlidersHorizontal className="w-4 h-4 mr-2" />
             ตัวกรองเพิ่มเติม
           </Button>
@@ -142,7 +155,11 @@ const BeatGallery = () => {
         {/* Results Count */}
         <div className="mb-8">
           <p className="text-gray-400">
-            พบ <span className="text-neon-cyan font-semibold">{products.length}</span> บีทเพลง
+            พบ{" "}
+            <span className="text-neon-cyan font-semibold">
+              {products.length}
+            </span>{" "}
+            บีทเพลง
             {loading && " (กำลังโหลด...)"}
           </p>
         </div>
@@ -169,7 +186,7 @@ const BeatGallery = () => {
                 />
                 {/* Edit Button */}
                 <Link href={`/editProduct/${product._id}`}>
-                  <Button 
+                  <Button
                     size="sm"
                     className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white hover:bg-black/90"
                   >
@@ -184,23 +201,23 @@ const BeatGallery = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center mt-12 gap-2">
-            <Button 
+            <Button
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              variant="outline" 
+              variant="outline"
               className="border-white/20 text-white hover:bg-white/10"
             >
               ก่อนหน้า
             </Button>
-            
+
             <span className="flex items-center px-4 text-white">
               หน้า {page} จาก {totalPages}
             </span>
-            
-            <Button 
+
+            <Button
               disabled={page === totalPages}
               onClick={() => setPage(page + 1)}
-              variant="outline" 
+              variant="outline"
               className="border-white/20 text-white hover:bg-white/10"
             >
               ถัดไป

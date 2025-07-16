@@ -29,7 +29,7 @@ const Nav = () => {
               หน้าแรก
             </Link>
             <Link
-              href="#beats"
+              href="/products"
               className="text-white hover:text-neon-cyan transition-colors duration-300"
             >
               บีทเพลง
@@ -62,7 +62,7 @@ const Nav = () => {
             <Button variant="ghost" size="icon" className="hover:bg-white/10">
               <User className="w-5 h-5" />
             </Button>
-            <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold hover-glow">
+            <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold hover-glow">
               เข้าสู่ระบบ
             </Button>
           </div>
@@ -91,7 +91,7 @@ const Nav = () => {
                 หน้าแรก
               </Link>
               <Link
-                href="#beats"
+                href="/products"
                 className="text-white hover:text-neon-cyan transition-colors"
               >
                 บีทเพลง
@@ -119,7 +119,7 @@ const Nav = () => {
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   ตะกร้า
                 </Button>
-                <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold">
+                <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold">
                   เข้าสู่ระบบ
                 </Button>
               </div>
