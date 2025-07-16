@@ -83,7 +83,7 @@ const Nav = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-white/10">
-            <nav className="flex flex-col space-y-4 mt-4">
+            <nav className="flex flex-col space-y-4 mt-4 text-center">
               <Link
                 href="/"
                 className="text-white hover:text-neon-pink transition-colors"
@@ -114,7 +114,7 @@ const Nav = () => {
               >
                 ติดต่อ
               </Link>
-              <div className="flex space-x-4 pt-4">
+              <div className="flex space-x-4 pt-4 justify-center">
                 <Button variant="ghost" size="sm" className="hover:bg-white/10">
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   ตะกร้า
