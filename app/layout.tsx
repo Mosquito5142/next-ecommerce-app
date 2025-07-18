@@ -6,6 +6,8 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
 import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +34,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Nav />
-        <div className="container mx-auto px-4 mt-20">{children}</div>
+        <AuthProvider>
+          <Nav />
+          <div className="container mx-auto px-4 mt-20">{children}</div>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

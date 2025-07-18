@@ -11,6 +11,7 @@ interface BeatCardProps {
   duration: string;
   price: number;
   imageUrl: string;
+  beatUrl?: string;
   isPlaying?: boolean;
   onPlayToggle: (id: number) => void;
 }

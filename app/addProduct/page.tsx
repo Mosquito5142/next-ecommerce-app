@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminProtected from "../components/AdminProtected";
 export default function AddProductPage() {
   // typescript
   type Product = {
@@ -73,9 +74,10 @@ export default function AddProductPage() {
 
   // ... inside AddProductPage component ...
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">เพิ่มสินค้าใหม่</h1>
-      <form className="space-y-4" onSubmit={handleSubmit}>
+    <AdminProtected>
+      <div className="container mx-auto p-8">
+        <h1 className="text-3xl font-bold mb-6">เพิ่มสินค้าใหม่</h1>
+        <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label
             htmlFor="title"
@@ -213,6 +215,7 @@ export default function AddProductPage() {
           บันทึกสินค้า
         </button>
       </form>
-    </div>
+      </div>
+    </AdminProtected>
   );
 }

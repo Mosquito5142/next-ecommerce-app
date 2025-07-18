@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
+import AdminProtected from "../../components/AdminProtected";
 
 export default function EditProductPage() {
   const [title, setTitle] = useState<string>("");
@@ -109,25 +110,28 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-8">
-        <div className="text-center">
-          <p className="text-white text-xl">กำลังโหลดข้อมูล...</p>
+      <AdminProtected>
+        <div className="container mx-auto p-8">
+          <div className="text-center">
+            <p className="text-white text-xl">กำลังโหลดข้อมูล...</p>
+          </div>
         </div>
-      </div>
+      </AdminProtected>
     );
   }
 
   return (
-    <div className="container mx-auto p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">แก้ไขสินค้า</h1>
-        <button
-          onClick={handleDelete}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          ลบสินค้า
-        </button>
-      </div>
+    <AdminProtected>
+      <div className="container mx-auto p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-white">แก้ไขสินค้า</h1>
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            ลบสินค้า
+          </button>
+        </div>
       
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
@@ -284,6 +288,7 @@ export default function EditProductPage() {
           </button>
         </div>
       </form>
-    </div>
+      </div>
+    </AdminProtected>
   );
 }
