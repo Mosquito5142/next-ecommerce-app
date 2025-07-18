@@ -114,7 +114,7 @@ function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold py-3 hover-glow disabled:opacity-50"
+              className="w-full neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold hover-glow"
             >
               {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
             </Button>
@@ -124,7 +124,7 @@ function LoginPage() {
           <div className="text-center mt-6">
             <p className="text-gray-400">
               ยังไม่มีบัญชีผู้ใช้?{" "}
-              <Link href="/register" className="text-neon-cyan hover:text-neon-pink transition-colors">
+              <Link href="/register" className="text-neon-cyan hover:text-neon-pink transition-colors hover-glow">
                 สร้างบัญชีที่นี่
               </Link>
             </p>

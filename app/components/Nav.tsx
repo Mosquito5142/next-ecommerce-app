@@ -1,6 +1,14 @@
-'use client'; 
+"use client";
 import { useState } from "react";
-import { Music, Menu, X, ShoppingCart, User, LogOut } from "lucide-react";
+import {
+  Music,
+  Menu,
+  X,
+  ShoppingCart,
+  User,
+  LogOut,
+  FilePlus2,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
@@ -31,13 +39,13 @@ const Nav = () => {
               หน้าแรก
             </Link>
             <Link
-              href="#beats"
+              href="#products"
               className="text-white hover:text-neon-cyan transition-colors duration-300"
             >
               บีทเพลง
             </Link>
             <Link
-              href="/products"
+              href="/categories"
               className="text-white hover:text-neon-pink transition-colors duration-300"
             >
               หมวดหมู่
@@ -61,22 +69,25 @@ const Nav = () => {
             <Button variant="ghost" size="icon" className="hover:bg-white/10">
               <ShoppingCart className="w-5 h-5" />
             </Button>
-            
+
             {user ? (
               <>
                 <div className="flex items-center space-x-2">
                   <User className="w-5 h-5 text-neon-cyan" />
                   <span className="text-white text-sm">{user.username}</span>
                   {isAdmin() && (
-                    <span className="px-2 py-1 bg-neon-pink/20 text-neon-pink text-xs rounded-full">
-                      ADMIN
-                    </span>
+                    <Link
+                      href="/addProduct"
+                      className="px-2 py-1 bg-neon-pink/20 text-neon-pink text-xs rounded-full"
+                    >
+                      <FilePlus2 className="w-4 h-4 mr-1" />
+                    </Link>
                   )}
                 </div>
-                <Button 
+                <Button
                   onClick={logout}
-                  variant="ghost" 
-                  size="icon" 
+                  variant="ghost"
+                  size="icon"
                   className="hover:bg-white/10"
                 >
                   <LogOut className="w-5 h-5" />
@@ -84,7 +95,7 @@ const Nav = () => {
               </>
             ) : (
               <Link href="/login">
-                <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold hover-glow">
+                <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold hover-glow">
                   เข้าสู่ระบบ
                 </Button>
               </Link>
@@ -115,13 +126,13 @@ const Nav = () => {
                 หน้าแรก
               </Link>
               <Link
-                href="#beats"
+                href="#products"
                 className="text-white hover:text-neon-cyan transition-colors"
               >
                 บีทเพลง
               </Link>
               <Link
-                href="/products"
+                href="/categories"
                 className="text-white hover:text-neon-pink transition-colors"
               >
                 หมวดหมู่
@@ -138,28 +149,37 @@ const Nav = () => {
               >
                 ติดต่อ
               </Link>
-              
+
               <div className="flex flex-col space-y-4 pt-4">
-                <Button variant="ghost" size="sm" className="hover:bg-white/10 justify-start">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hover:bg-white/10 justify-start"
+                >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   ตะกร้า
                 </Button>
-                
+
                 {user ? (
                   <>
                     <div className="flex items-center space-x-2">
                       <User className="w-4 h-4 text-neon-cyan" />
-                      <span className="text-white text-sm">{user.username}</span>
+                      <span className="text-white text-sm">
+                        {user.username}
+                      </span>
                       {isAdmin() && (
-                        <span className="px-2 py-1 bg-neon-pink/20 text-neon-pink text-xs rounded-full">
-                          ADMIN
-                        </span>
+                        <Link
+                          href="/addProduct"
+                          className="px-2 py-1 bg-neon-pink/20 text-neon-pink text-xs rounded-full"
+                        >
+                          <FilePlus2 className="w-4 h-4 mr-1" />
+                        </Link>
                       )}
                     </div>
-                    <Button 
+                    <Button
                       onClick={logout}
-                      variant="ghost" 
-                      size="sm" 
+                      variant="ghost"
+                      size="sm"
                       className="hover:bg-white/10 justify-start"
                     >
                       <LogOut className="w-4 h-4 mr-2" />
@@ -168,7 +188,7 @@ const Nav = () => {
                   </>
                 ) : (
                   <Link href="/login">
-                    <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-black font-semibold w-full">
+                    <Button className="neon-border bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-semibold w-full">
                       เข้าสู่ระบบ
                     </Button>
                   </Link>
